@@ -4,7 +4,7 @@ comment_count=0
 i=0
 while read hashtag
 do
-    echo "" > components/RAC/cursor
+    echo $cursor > components/RAC/cursor
     while read cursor
     do
         url="https://mbasic.facebook.com/hashtag/$hashtag/?cursor=$cursor"
@@ -20,6 +20,7 @@ do
             echo -e "\e[36mpost reach={$post_count}\e[0m"
             echo $main_id >> components/PSC/profile_id
             echo "curl $(cat agent) $(cat cookie) $(cat host) https://mbasic.facebook.com/story.php?story_fbid="$story_id"\&id="$main_id" > components/RAC/comment_page" > components/RAC/tmp_line
+            sh components/RAC/tmp_line
             echo -e "\e[32mcommenting in story id={$story_id}\e[0m"
             #for loop for multi comment
             for (( c=1; c<=5; c++ ))
