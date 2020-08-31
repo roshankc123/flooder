@@ -1,8 +1,3 @@
-echo "curl $(cat agent) -b cookie $(cat host) https://mbasic.facebook.com/story.php?story_fbid=111481227347328\&id=100054563540381 > components/RAC/user_page" > components/RAC/tmp_line
-sh components/RAC/tmp_line
-echo -e "\e[32mcommenting in own story\e[0m"
-echo "curl $(cat agent) -b cookie $(cat host) --request POST --data \"fb_dtsg=$(cat components/RAC/user_page | grep -oP '(?<=name=\"fb_dtsg\" value=\").*?(?=\")' | uniq)&jazoest=$(cat components/RAC/user_page | grep -oP '(?<=name=\"jazoest\" value=\").*?(?=\")' | uniq)&comment_text=#JusticeForNirmalaPanthA\" https://mbasic.facebook.com/a/comment.php?$(cat components/RAC/user_page | grep -oP '(?<=comment_logging&amp;).*?(?=&)' | uniq)">components/RAC/tmp_line
-sh components/RAC/tmp_line
 cursor=""
 post_count=0
 comment_count=0
@@ -64,8 +59,3 @@ do
             break
     fi
 done < components/PSC/hashtag
-echo "curl $(cat agent) -b cookie $(cat host) https://mbasic.facebook.com/story.php?story_fbid=111481227347328\&id=100054563540381 > components/RAC/user_page" > components/RAC/tmp_line
-sh components/RAC/tmp_line
-echo -e "\e[32mcommenting in own story\e[0m"
-echo "curl $(cat agent) -b cookie $(cat host) --request POST --data \"fb_dtsg=$(cat components/RAC/user_page | grep -oP '(?<=name=\"fb_dtsg\" value=\").*?(?=\")' | uniq)&jazoest=$(cat components/RAC/user_page | grep -oP '(?<=name=\"jazoest\" value=\").*?(?=\")' | uniq)&comment_text=#JusticeForNirmalaPantha\" https://mbasic.facebook.com/a/comment.php?$(cat components/RAC/user_page | grep -oP '(?<=comment_logging&amp;).*?(?=&)' | uniq)">components/RAC/tmp_line
-sh components/RAC/tmp_line
