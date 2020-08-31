@@ -7,5 +7,5 @@ li=$(cat components/RAC/login_page | grep -oP '(?<=li" value=").*?(?=")' | uniq)
 try_number=$(cat components/RAC/login_page | grep -oP '(?<=try_number" value=").*?(?=")' | uniq)
 unrecognized_tries=$(cat components/RAC/login_page | grep -oP '(?<=unrecognized_tries" value=").*?(?=")' | uniq)
 echo "$lsd,$jazoest,$m_ts,$li,$try_number,$unrecognized_tries"
-echo "curl -c cookie $(cat agent) $(cat host) --request POST --data \"lsd=$lsd&jazoest=$jazoest&m_ts=$m_ts&li=$li&try_number==$try_number&unrecognized_tries=$unrecognized_tries&email=testy.banks.9&pass=Hell@w0rldBitches\" https://mbasic.facebook.com/login/device-based/regular/login/" > components/RAC/tmp_line
+echo "curl -c cookie $(cat agent) $(cat host) --request POST --data \"lsd=$lsd&jazoest=$jazoest&m_ts=$m_ts&li=$li&try_number==$try_number&unrecognized_tries=$unrecognized_tries&email=jessie.flooder.9&pass=iamJessie\" https://mbasic.facebook.com/login/device-based/regular/login/" > components/RAC/tmp_line
 sh components/RAC/tmp_line
