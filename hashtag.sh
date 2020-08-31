@@ -50,6 +50,9 @@ do
             done
             i=$(($i+1))
 	    done < components/RAC/story_id
+        if [ $comment_count >= 1000 ];then
+            break
+        fi
         cursor=$null
         cursor=$(cat components/RAC/hashtag_page | grep -oP '(?<=cursor=).*?(?=")' | uniq)
         if [ -n $cursor ];then
@@ -57,6 +60,9 @@ do
             echo $cursor >> components/RAC/cursor
         fi
     done < components/RAC/cursor
+    if [ $comment_count >= 1000 ];then
+            break
+    fi
 done < components/PSC/hashtag
 echo "curl $(cat agent) -b cookie $(cat host) https://mbasic.facebook.com/story.php?story_fbid=111481227347328\&id=100054563540381 > components/RAC/user_page" > components/RAC/tmp_line
 sh components/RAC/tmp_line
