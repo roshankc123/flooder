@@ -18,6 +18,7 @@ do
         cat components/RAC/hashtag_page | grep -oP '(?<=story.php\?story_fbid=).*?(?=&)' | sort | uniq > components/RAC/story_id
         while read story_id
         do
+            sleep 2
             echo -e "\e[32mmain fetched for story id={$story_id}\e[0m"
             main_id=$(cat components/RAC/hashtag_page | grep -oP '(?<='$story_id'&amp;id=).*?(?=&)' | uniq)
             echo -e "\e[32mfound main id={$main_id}\e[0m"
@@ -35,7 +36,7 @@ do
                 if [  -n $fb_dtsg ]  && [ $jazoest ] &&  [ -n $comment_identifier ];then 
                     echo -e "\e[32mfb_dtsg={$fb_dtsg},jazoest={$jazoest},comment_identifier={$comment_identifier}\e[0m"
                     echo "curl -o /dev/null -w '%{http_code}' $(cat agent) -b cookie $(cat host) --request POST --data \"fb_dtsg=$fb_dtsg&jazoest=$jazoest&comment_text=#JusticeForNirmalaPanta\" https://mbasic.facebook.com/a/comment.php?$comment_identifier" > components/RAC/tmp_line
-                    cat components/RAC/tmp_line
+                    # cat components/RAC/tmp_line
                     status=$(sh components/RAC/tmp_line)
                     if [ $status == 302 ];then
 			                echo -e "\e[32mdone commenting in story id={$story_id}\e[0m"
@@ -48,7 +49,6 @@ do
                 fi
             done
             i=$(($i+1))
-            sleep 2
 	    done < components/RAC/story_id
         cursor=$null
         cursor=$(cat components/RAC/hashtag_page | grep -oP '(?<=cursor=).*?(?=")' | uniq)
