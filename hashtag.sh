@@ -33,18 +33,20 @@ do
                 jazoest=$(cat components/RAC/comment_page | grep -oP '(?<=name=\"jazoest\" value=\").*?(?=\")' | uniq)
                 comment_identifier=$(cat components/RAC/comment_page | grep -oP '(?<=comment_logging&amp;).*?(?=&)' | uniq)
                 if [  -n $fb_dtsg ]  && [ $jazoest ] &&  [ -n $comment_identifier ];then 
-                    echo -e "\e[32mfb_dtsg={$fb_dtsg},jazoest={$jazoest},comment_identifier={$comment_identifier}\e[0m"
-                    echo "curl -o /dev/null -w '%{http_code}' $(cat agent) -b cookie $(cat host) --request POST --data \"fb_dtsg=$fb_dtsg&jazoest=$jazoest&comment_text=#JusticeForNirmalaPanta\" https://mbasic.facebook.com/a/comment.php?$comment_identifier" > components/RAC/tmp_line
-                    cat components/RAC/tmp_line
-                    status=$(sh components/RAC/tmp_line)
-                    echo $status
-                    if [ $status == 302 ];then
-			            echo -e "\e[32mdone commenting in story id={$story_id}\e[0m"
-                        comment_count=$(($comment_count+1))
-                        echo -e "\e[35mcomment reach={$comment_count}\e[0m"
-		            else
-		                echo -e "\e[31merror commenting in story id={$story_id}\e[0m"
-		            fi
+                    for (( d=1; d<=5; d++ ))
+                    do
+                        echo -e "\e[32mfb_dtsg={$fb_dtsg},jazoest={$jazoest},comment_identifier={$comment_identifier}\e[0m"
+                        echo "curl -o /dev/null -w '%{http_code}' $(cat agent) -b cookie $(cat host) --request POST --data \"fb_dtsg=$fb_dtsg&jazoest=$jazoest&comment_text=#JusticeForNirmalaPanta\" https://mbasic.facebook.com/a/comment.php?$comment_identifier" > components/RAC/tmp_line
+                        cat components/RAC/tmp_line
+                        status=$(sh components/RAC/tmp_line)
+                        if [ $status == 302 ];then
+			                echo -e "\e[32mdone commenting in story id={$story_id}\e[0m"
+                            comment_count=$(($comment_count+1))
+                            echo -e "\e[35mcomment reach={$comment_count}\e[0m"
+		                else
+		                    echo -e "\e[31merror commenting in story id={$story_id}\e[0m"
+		                fi
+                    done
                 fi
             done
             i=$(($i+1))
