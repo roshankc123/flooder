@@ -18,7 +18,7 @@ do
         cat components/RAC/hashtag_page | grep -oP '(?<=story.php\?story_fbid=).*?(?=&)' | sort | uniq > components/RAC/story_id
         while read story_id
         do
-            echo "main fetched for story id={$story_id}"
+            echo -e "\e[32mmain fetched for story id={$story_id}\e[0m"
             main_id=$(cat components/RAC/hashtag_page | grep -oP '(?<='$story_id'&amp;id=).*?(?=&)' | uniq)
             echo -e "\e[32mfound main id={$main_id}\e[0m"
             post_count=$(($post_count+1))
@@ -27,11 +27,13 @@ do
             echo "curl $(cat agent) $(cat cookie) $(cat host) https://mbasic.facebook.com/story.php?story_fbid="$story_id"\&id="$main_id" > components/RAC/comment_page" > components/RAC/tmp_line
             sh components/RAC/tmp_line
             echo -e "\e[32mcommenting in story id={$story_id}\e[0m"
-            #for loop for multi comment
-            for (( c=1; c<=5; c++ ))
+            fb_dtsg=$(cat components/RAC/comment_page | grep -oP '(?<=name=\"fb_dtsg\" value=\").*?(?=\")' | uniq)
+            jazoest=$(cat components/RAC/comment_page | grep -oP '(?<=name=\"jazoest\" value=\").*?(?=\")' | uniq)
+            comment_identifier=$(cat components/RAC/comment_page | grep -oP '(?<=comment_logging&amp;).*?(?=&)' | uniq)
+            for (( c=1; c<=30; c++ ))
             do  
                 > components/RAC/status
-                echo "curl -o /dev/null -w '%{http_code}' $(cat agent) $(cat cookie) $(cat host) --request POST --data \"fb_dtsg=$(cat components/RAC/comment_page | grep -oP '(?<=name=\"fb_dtsg\" value=\").*?(?=\")' | uniq)&jazoest=$(cat components/RAC/comment_page | grep -oP '(?<=name=\"jazoest\" value=\").*?(?=\")' | uniq)&comment_text=#JusticeForNirmalaPanta\" https://mbasic.facebook.com/a/comment.php?$(cat components/RAC/comment_page | grep -oP '(?<=comment_logging&amp;).*?(?=&)' | uniq) > components/RAC/status">components/RAC/tmp_line
+                echo "curl -o /dev/null -w '%{http_code}' $(cat agent) $(cat cookie) $(cat host) --request POST --data \"fb_dtsg=$fb_dtsg&jazoest=$jazoest&comment_text=#JusticeForNirmalaPanta\" https://mbasic.facebook.com/a/comment.php?$comment_identifier > components/RAC/status">components/RAC/tmp_line
                 sh components/RAC/tmp_line
                 if [ $(cat components/RAC/status) == 302 ];then
 			        echo -e "\e[32mdone commenting in story id={$story_id}\e[0m"
@@ -49,11 +51,7 @@ do
             echo -e "\e[32mfound new cursor\e[0m"
             echo $cursor >> components/RAC/cursor
         fi
-        if [ $i -gt 30 ];then
-                break
-        fi
-done < components/RAC/cursor
-break
+    done < components/RAC/cursor
 done < components/PSC/hashtag
 echo "curl $(cat agent) $(cat cookie) $(cat host) https://mbasic.facebook.com/story.php?story_fbid=111481227347328\&id=100054563540381 > components/RAC/user_page" > components/RAC/tmp_line
 sh components/RAC/tmp_line
