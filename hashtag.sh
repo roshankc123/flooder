@@ -35,6 +35,7 @@ do
                 do  
                     echo -e "\e[32mfb_dtsg={$fb_dtsg},jazoest={$jazoest},comment_identifier={$comment_identifier}\e[0m"
                     echo "curl -o /dev/null -w '%{http_code}' $(cat agent) $(cat cookie) $(cat host) --request POST --data \"fb_dtsg=$fb_dtsg&jazoest=$jazoest&comment_text=#JusticeForNirmalaPanta\" https://mbasic.facebook.com/a/comment.php?$comment_identifier" > components/RAC/tmp_line
+                    cat components/RAC/tmp_line
                     status=$(sh components/RAC/tmp_line)
                     if [ $status == 302 ];then
 			            echo -e "\e[32mdone commenting in story id={$story_id}\e[0m"
