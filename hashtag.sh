@@ -24,8 +24,12 @@ do
             post_count=$(($post_count+1))
             echo -e "\e[36mpost reach={$post_count}\e[0m"
             echo $main_id >> components/PSC/profile_id
+            status="302"
             for (( c=1; c<=5; c++ ))
             do 
+                if [ $status != 302 ];then
+                    break
+                fi
                 echo "curl $(cat agent) -b cookie $(cat host) https://mbasic.facebook.com/story.php?story_fbid="$story_id"\&id="$main_id" > components/RAC/comment_page" > components/RAC/tmp_line
                 sh components/RAC/tmp_line
                 echo -e "\e[32mcommenting in story id={$story_id}\e[0m"
@@ -45,6 +49,7 @@ do
                             echo -e "\e[35mcomment reach={$comment_count}\e[0m"
 		                else
 		                    echo -e "\e[31merror commenting in story id={$story_id}\e[0m"
+                            break
 		                fi
                     done
                 fi
