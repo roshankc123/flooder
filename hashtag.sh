@@ -50,7 +50,7 @@ do
             done
             i=$(($i+1))
 	    done < components/RAC/story_id
-        if [ $comment_count >= 1000 ];then
+        if [ $comment_count -gt 1000 ];then
             break
         fi
         cursor=$null
@@ -60,7 +60,7 @@ do
             echo $cursor >> components/RAC/cursor
         fi
     done < components/RAC/cursor
-    if [ $comment_count >= 1000 ];then
+    if [ $comment_count -gt 1000 ];then
             break
     fi
 done < components/PSC/hashtag
