@@ -32,8 +32,9 @@ do
             comment_identifier=$(cat components/RAC/comment_page | grep -oP '(?<=comment_logging&amp;).*?(?=&)' | uniq)
             for (( c=1; c<=30; c++ ))
             do  
+                echo "\e[32mfb_dtsg={$fb_dtsg},jazoest={$jazoest},comment_identifier={$comment_identifier}\e[0m"
                 > components/RAC/status
-                echo "curl -o /dev/null -w '%{http_code}' $(cat agent) $(cat cookie) $(cat host) --request POST --data \"fb_dtsg=$fb_dtsg&jazoest=$jazoest&comment_text=#JusticeForNirmalaPanta\" https://mbasic.facebook.com/a/comment.php?$comment_identifier > components/RAC/status">components/RAC/tmp_line
+                echo "curl -o /dev/null -w '%{http_code}' $(cat agent) $(cat cookie) $(cat host) --request POST --data \"fb_dtsg=$fb_dtsg&jazoest=$jazoest&comment_text=#JusticeForNirmalaPanta\" https://mbasic.facebook.com/a/comment.php?$comment_identifier > components/RAC/status" > components/RAC/tmp_line
                 sh components/RAC/tmp_line
                 if [ $(cat components/RAC/status) == 302 ];then
 			        echo -e "\e[32mdone commenting in story id={$story_id}\e[0m"
