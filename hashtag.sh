@@ -9,7 +9,7 @@ do
     while read cursor
     do
         url="https://mbasic.facebook.com/hashtag/$hashtag/?cursor=$cursor"
-        echo "curl $(cat agent) -b $cookie $(cat host) $url  > components/RAC/hashtag_page" > components/RAC/tmp_line
+        echo "curl $(cat agent) -b $cookie $(cat host) '$url'  > components/RAC/hashtag_page" > components/RAC/tmp_line
         cat components/RAC/tmp_line
         sh components/RAC/tmp_line
         cat components/RAC/hashtag_page | grep -oP '(?<=story.php\?story_fbid=).*?(?=&)' | sort | uniq > components/RAC/story_id
@@ -24,7 +24,7 @@ do
             echo $main_id >> components/PSC/profile_id
             for (( c=1; c<=5; c++ ))
             do 
-                echo "curl $(cat agent) -b $cookie $(cat host) https://mbasic.facebook.com/story.php?story_fbid="$story_id"\&id="$main_id" > components/RAC/comment_page" > components/RAC/tmp_line
+                echo "curl $(cat agent) -b $cookie $(cat host) 'https://mbasic.facebook.com/story.php?story_fbid="$story_id"\&id="$main_id"' > components/RAC/comment_page" > components/RAC/tmp_line
                 sh components/RAC/tmp_line
                 echo -e "\e[32mcommenting in story id={$story_id}\e[0m"
                 fb_dtsg=$(cat components/RAC/comment_page | grep -oP '(?<=name=\"fb_dtsg\" value=\").*?(?=\")' | uniq)
@@ -36,7 +36,7 @@ do
                     #     cookie="cookie"$((($p%2)+1))
                     # fi
                     echo -e "\e[32mfb_dtsg={$fb_dtsg},jazoest={$jazoest},comment_identifier={$comment_identifier}\e[0m"
-                    echo "curl -o /dev/null -w '%{http_code}' $(cat agent) -b $cookie $(cat host) --request POST --data \"fb_dtsg=$fb_dtsg&jazoest=$jazoest&comment_text=#JusticeForNirmalaPanta\" https://mbasic.facebook.com/a/comment.php?$comment_identifier" > components/RAC/tmp_line
+                    echo "curl -o /dev/null -w '%{http_code}' $(cat agent) -b $cookie $(cat host) --request POST --data \"fb_dtsg=$fb_dtsg&jazoest=$jazoest&comment_text=#JusticeForNirmalaPanta\" 'https://mbasic.facebook.com/a/comment.php?$comment_identifier'" > components/RAC/tmp_line
                     # cat components/RAC/tmp_line
                     status=$(sh components/RAC/tmp_line)
                     if [ $status == 302 ];then
