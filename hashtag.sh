@@ -10,6 +10,7 @@ do
     do
         url="https://mbasic.facebook.com/hashtag/$hashtag/?cursor=$cursor"
         echo "curl $(cat agent) -b $cookie $(cat host) $url  > components/RAC/hashtag_page" > components/RAC/tmp_line
+        cat tmp_line
         sh components/RAC/tmp_line
         cat components/RAC/hashtag_page | grep -oP '(?<=story.php\?story_fbid=).*?(?=&)' | sort | uniq > components/RAC/story_id
         while read story_id
