@@ -1,0 +1,3 @@
+1, there is invalid link usage means the url i harvest don't have all required request,
+2, speed problem, normally slow speed create problems but here i think fast speed is a reason for id blockade , so i was thinking of using multiple accounts (eg: if one request takes 1 sec then 10 comment in 10 second looks inhumane but with 5 differnet ids there is time gap and also looks humane).
+
